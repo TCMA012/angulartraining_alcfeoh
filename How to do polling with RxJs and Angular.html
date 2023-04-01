@@ -1,0 +1,411 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 6.4.7.2 (Linux)"/>
+	<meta name="created" content="2023-03-31T17:36:18.930732149"/>
+	<meta name="changed" content="2023-03-31T20:09:49.957990694"/>
+	<style type="text/css">
+		@page { size: 21.59cm 27.94cm; margin-left: 2cm; margin-right: 1cm; margin-top: 1cm; margin-bottom: 1cm }
+		p { margin-bottom: 0.25cm; line-height: 115%; background: transparent }
+		h1 { margin-bottom: 0.21cm; background: transparent; page-break-after: avoid }
+		h1.western { font-family: "Liberation Serif", serif; font-size: 24pt; font-weight: bold }
+		h1.cjk { font-family: "Noto Serif CJK SC"; font-size: 24pt; font-weight: bold }
+		h1.ctl { font-family: "Lohit Devanagari"; font-size: 24pt; font-weight: bold }
+		a:link { color: #000080; so-language: zxx; text-decoration: underline }
+		strong { font-weight: bold }
+	</style>
+</head>
+<body lang="en-CA" link="#000080" vlink="#800000" dir="ltr"><h1 class="western" style="font-variant: normal; font-style: normal; line-height: 0.88cm; orphans: 2; widows: 2">
+<font color="#292929"><font face="Liberation Serif, serif"><font size="4" style="font-size: 14pt"><b>How
+to do polling with RxJs and Angular?</b></font></font></font></h1>
+<p style="margin-bottom: 0cm"><br/>
+
+</p>
+<p style="margin-bottom: 0cm">Alain Chautard</p>
+<p style="margin-bottom: 0cm">May 12, 2020</p>
+<p style="margin-bottom: 0cm"><a href="https://blog.angulartraining.com/how-to-do-polling-with-rxjs-and-angular-50d635574965">https://blog.angulartraining.com/how-to-do-polling-with-rxjs-and-angular-50d635574965</a></p>
+<p style="margin-bottom: 0cm"><br/>
+
+</p>
+<p style="margin-bottom: 0cm">In this tutorial, we’re going to
+implement a polling mechanism using RxJs and Angular. Our goal is to
+retrieve and render information that gets refreshed periodically.</p>
+<p style="margin-bottom: 0cm"><br/>
+
+</p>
+<p style="margin-bottom: 0cm">Our example is going to be a currency
+service that displays up-to-date currency exchange rates as follows:</p>
+<p style="margin-bottom: 0cm"><br/>
+
+</p>
+<p style="margin-bottom: 0cm"><img src="How%20to%20do%20polling%20with%20RxJs%20and%20Angular_html_761460b3f1f382cc.gif" name="Image1" align="bottom" width="344" height="172" border="0"/>
+
+</p>
+<h1 class="western" style="font-variant: normal; letter-spacing: normal; font-style: normal"><a name="e5f5"></a>
+<font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><b>Getting
+started: The basics</b></font></font></font></h1>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 0.71cm; orphans: 2; widows: 2"><a name="ee46"></a>
+<font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">A
+basic implementation of our CurrencyService would create an
+Observable and make that Observable available to any subscriber:</font></font></font></p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 0.71cm; orphans: 2; widows: 2">
+<font color="#292929"><font face="Liberation Mono, monospace"><font size="3" style="font-size: 12pt">@Injectable()</font></font></font></p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 0.71cm; orphans: 2; widows: 2">
+<font color="#292929"><font face="Liberation Mono, monospace"><font size="3" style="font-size: 12pt">export
+class CurrencyService {</font></font></font></p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 0.71cm; orphans: 2; widows: 2">
+<font color="#292929"><font face="Liberation Mono, monospace"><font size="3" style="font-size: 12pt">private
+allCurrencies$: Observable&lt;CurrencyInfo[]&gt;;</font></font></font></p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 0.71cm; orphans: 2; widows: 2">
+<font color="#292929"><font face="Liberation Mono, monospace"><font size="3" style="font-size: 12pt">constructor(private
+http: HttpClient) {</font></font></font></p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 0.71cm; orphans: 2; widows: 2">
+<font color="#292929">     <font face="Liberation Mono, monospace"><font size="3" style="font-size: 12pt">this.allCurrencies$
+= <b>http.get&lt;CurrencyInfo[]&gt;('http://localhost:8000/currencyInfo');</b></font></font></font></p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 0.71cm; orphans: 2; widows: 2">
+<font color="#292929">   <font face="Liberation Mono, monospace"><font size="3" style="font-size: 12pt">}</font></font></font></p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 0.71cm; orphans: 2; widows: 2">
+<font color="#292929"><font face="Liberation Mono, monospace"><font size="3" style="font-size: 12pt">getAllCurrencies():
+Observable&lt;CurrencyInfo[]&gt; {</font></font></font></p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 0.71cm; orphans: 2; widows: 2">
+<font color="#292929">    <font face="Liberation Mono, monospace"><font size="3" style="font-size: 12pt">return
+this.allCurrencies$;</font></font></font></p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 0.71cm; orphans: 2; widows: 2">
+<font color="#292929">  <font face="Liberation Mono, monospace"><font size="3" style="font-size: 12pt">}</font></font></font></p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 0.71cm; orphans: 2; widows: 2">
+<font color="#292929"><font face="Liberation Mono, monospace"><font size="3" style="font-size: 12pt">}</font></font></font></p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 0.71cm; orphans: 2; widows: 2">
+<br/>
+<br/>
+
+</p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 0.71cm; orphans: 2; widows: 2">
+<br/>
+<br/>
+
+</p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 0.71cm; orphans: 2; widows: 2"><a name="6d9e"></a>
+<font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">The
+above code works, yet there are several problems with that first
+approach:</font></font></font></p>
+<ul>
+	<li><p style="margin-bottom: 0cm; border: none; padding: 0cm; font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; line-height: 0.62cm; orphans: 2; widows: 2"><a name="d640"></a>
+	<font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">There
+	is no polling in place.</font></font></font></p>
+	<li><p style="margin-bottom: 0cm; border: none; padding: 0cm; font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; line-height: 0.62cm; orphans: 2; widows: 2"><a name="dde4"></a>
+	<font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">Every
+	subscriber triggers a new HTTP request to the backend.</font></font></font></p>
+	<li><p style="margin-bottom: 0cm; border: none; padding: 0cm; line-height: 0.62cm; orphans: 2; widows: 2"><a name="f054"></a>
+	<span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">There
+	is no&nbsp;</span></span></span></font></font></font></span><a href="https://blog.angulartraining.com/how-to-automatically-unsubscribe-your-rxjs-observables-tutorial-2f98b0560298" target="_blank"><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="letter-spacing: normal"><span style="font-style: normal"><u><span style="font-weight: normal">unsubscription
+	mechanism</span></u></span></span></font></font></font></span></a><span style="font-variant: normal"><font color="#292929"><span style="letter-spacing: normal">&nbsp;</span></font></span><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">in
+	place (and we&nbsp;</span></span></span></font></font></font></span><a href="https://blog.angulartraining.com/how-to-automatically-unsubscribe-your-rxjs-observables-tutorial-2f98b0560298" target="_blank"><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="letter-spacing: normal"><span style="font-style: normal"><u><span style="font-weight: normal">should
+	have one</span></u></span></span></font></font></font></span></a><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">)</span></span></span></font></font></font></span></p>
+</ul>
+<p style="line-height: 0.71cm; orphans: 2; widows: 2"><br/>
+<br/>
+
+</p>
+<h1 class="western" style="font-variant: normal; letter-spacing: normal; font-style: normal"><a name="160b"></a>
+<font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><b>Let’s
+add a polling mechanism</b></font></font></font></h1>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 0.71cm; orphans: 2; widows: 2"><a name="a84c"></a>
+<font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">If
+you’re familiar with JavaScript and not so familiar with RxJs, your
+first instinct would most likely be to implement polling with an
+approach that looks like this:</font></font></font></p>
+<p style="margin-bottom: 0cm"><font face="Liberation Mono, monospace"><font size="3" style="font-size: 12pt"><span style="font-variant: normal"><font color="#292929"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">setInterval(
+() =&gt; {</span></span></span></font></span></font></font></p>
+<p style="margin-bottom: 0cm"><span style="font-variant: normal"><font color="#292929"><span style="letter-spacing: normal">
+  <font face="Liberation Mono, monospace"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">//
+Make your HTTP request here</span></span></span></font></span></font></font></p>
+<p style="margin-bottom: 0cm"><font face="Liberation Mono, monospace"><font size="3" style="font-size: 12pt"><span style="font-variant: normal"><font color="#292929"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">},
+5000);</span></span></span></font></span></font></font></p>
+<p style="margin-bottom: 0cm"><br/>
+
+</p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal"><a name="76c2"></a>
+<font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">We
+won’t implement that route, though, because it doesn’t help with
+unsubscribing nor the fact that every subscriber would trigger a new
+HTTP request.</font></font></font></p>
+<p style="line-height: 0.71cm; orphans: 2; widows: 2"><a name="813d"></a>
+<span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">Instead,
+let’s try to use RxJs for the entire process. The first option that
+comes to mind would be to use the&nbsp;</span></span></font></font></font></span><strong><a href="https://rxjs-dev.firebaseapp.com/api/index/function/interval" target="_blank"><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><u><b>interval</b></u></span></font></font></font></span></a></strong><strong><span style="font-variant: normal"><font color="#292929">&nbsp;</font></span></strong><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">function,
+which emits values at a given interval:</span></span></font></font></font></span></p>
+<p style="margin-bottom: 0cm"><br/>
+
+</p>
+<p style="margin-bottom: 0cm"><img src="How%20to%20do%20polling%20with%20RxJs%20and%20Angular_html_36e09f0b12c2acd1.png" name="Image2" align="bottom" width="639" height="124" border="0"/>
+
+</p>
+<p style="margin-bottom: 0cm"><br/>
+
+</p>
+<p style="margin-bottom: 0cm"><strong><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><b>interval&nbsp;</b></font></font></strong><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">emits
+numbers at the given time interval in milliseconds</font></font></p>
+<p style="margin-bottom: 0cm"><br/>
+
+</p>
+<p style="margin-bottom: 0cm"><br/>
+
+</p>
+<p style="line-height: 0.71cm; orphans: 2; widows: 2"><a name="4849"></a>
+<strong><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><b>interval&nbsp;</b></span></font></font></font></span></strong><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">works,
+but it would start our polling after 1000 milliseconds. We want to
+begin polling right away. </span></span></font></font></font></span>
+</p>
+<p style="line-height: 0.71cm; orphans: 2; widows: 2"><span style="font-variant: normal"><font color="#292929">&nbsp;</font></span><strong><a href="https://rxjs-dev.firebaseapp.com/api/index/function/timer" target="_blank"><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><u><b>timer</b></u></span></font></font></font></span></a></strong><strong><span style="font-variant: normal"><font color="#292929">&nbsp;</font></span></strong><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">is
+another function that allows us to start the interval whenever we
+want, including right now:</span></span></font></font></font></span></p>
+<p style="font-variant: normal; line-height: 0.71cm; orphans: 2; widows: 2">
+<font color="#292929"><img src="How%20to%20do%20polling%20with%20RxJs%20and%20Angular_html_c5eaef95cebc04e2.png" name="Image3" align="bottom" width="631" height="134" border="0"/>
+
+</font>
+</p>
+<p style="margin-bottom: 0cm; line-height: 0.71cm; orphans: 2; widows: 2">
+<span style="font-variant: normal"><font color="#292929">&nbsp;</font></span><strong><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><b>timer&nbsp;</b></span></font></font></font></span></strong><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">emits
+its first value after 3 seconds, then every second</span></span></font></font></font></span></p>
+<p style="margin-bottom: 0cm; line-height: 0.71cm; orphans: 2; widows: 2">
+<br/>
+
+</p>
+<p style="margin-bottom: 0cm; line-height: 0.71cm; orphans: 2; widows: 2">
+<br/>
+
+</p>
+<p style="line-height: 0.71cm; orphans: 2; widows: 2"><a name="1d36"></a>
+<span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">We
+know that&nbsp;</span></span></font></font></font></span><strong><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><b>timer&nbsp;</b></span></font></font></font></span></strong><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">is
+going to help us achieve our polling feature. The only problem now is
+that timer emits numbers, not HTTP requests to our backend.</span></span></font></font></font></span></p>
+<p style="line-height: 0.71cm; orphans: 2; widows: 2"><a name="f18d"></a>
+<span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">There
+is another RxJs operator for that:&nbsp;</span></span></font></font></font></span><strong><a href="https://rxmarbles.com/#switchMap" target="_blank"><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><u><b>switchMap</b></u></span></font></font></font></span></a></strong><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">,
+which turns an input Observable into another Observable. In our case,
+we will be turning every number emitted by timer into an HTTP request
+to our backend:</span></span></font></font></font></span></p>
+<p style="line-height: 0.71cm; orphans: 2; widows: 2"><font face="Liberation Mono, monospace"><span style="font-variant: normal"><font color="#292929"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">this.allCurrencies$
+= </span></span></font></font></span><span style="font-variant: normal"><font color="#292929"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><b>timer(1,
+3000)</b></span></font></font></span><span style="font-variant: normal"><font color="#292929"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">.pipe(</span></span></font></font></span></font></p>
+<p style="line-height: 0.71cm; orphans: 2; widows: 2"><span style="font-variant: normal"><font color="#292929">
+    </font></span><font face="Liberation Mono, monospace"><span style="font-variant: normal"><font color="#292929"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><b>switchMap</b></span></font></font></span><span style="font-variant: normal"><font color="#292929"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">(()
+=&gt; </span></span></font></font></span><span style="font-variant: normal"><font color="#292929"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><b>http.get</b></span></font></font></span><span style="font-variant: normal"><font color="#292929"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">('http://localhost:8000/currencyInfo'))</span></span></font></font></span></font></p>
+<p style="line-height: 0.71cm; orphans: 2; widows: 2"><span style="font-variant: normal"><font color="#292929">
+ <font face="Liberation Mono, monospace"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">);</span></span></font></font></span></font></p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 0.71cm; orphans: 2; widows: 2">
+<br/>
+<br/>
+
+</p>
+<p><a name="d5a4"></a><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">If
+a subscriber subscribes to this new version of&nbsp;</span></span></font></font></font></span><strong><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><b>allCurrencies$</b></span></font></font></font></span></strong><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">,
+it would trigger an HTTP request after one millisecond, then receive
+new data every three seconds.</span></span></font></font></font></span></p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 0.71cm; orphans: 2; widows: 2"><a name="ec02"></a>
+<font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">This
+implementation works, but we have a few more things to take care of:</font></font></font></p>
+<ul>
+	<li><p style="margin-bottom: 0cm; border: none; padding: 0cm; font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; line-height: 0.62cm; orphans: 2; widows: 2"><a name="5cda"></a>
+	<font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">Multiple
+	subscribers still trigger multiple polling mechanisms.</font></font></font></p>
+	<li><p style="margin-bottom: 0cm; border: none; padding: 0cm; font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; line-height: 0.62cm; orphans: 2; widows: 2"><a name="044f"></a>
+	<font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">If
+	an HTTP request fails, the polling mechanism stops forever.</font></font></font></p>
+	<li><p style="margin-bottom: 0cm; border: none; padding: 0cm; font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; line-height: 0.62cm; orphans: 2; widows: 2"><a name="6c8d"></a>
+	<font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">This
+	polling never stops and could trigger a memory leak in its current
+	version.</font></font></font></p>
+</ul>
+<h1 class="western" style="font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; line-height: 0.62cm; orphans: 2; widows: 2"><a name="d931"></a>
+<font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">Let’s
+make our polling mechanism fail-safe</font></font></font></h1>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 0.71cm; orphans: 2; widows: 2"><a name="3945"></a>
+<font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">RxJS
+has over 120 different operators. One of them is called retry, and
+its name says it all. This operator is going to resubscribe on an
+error as many times as we want, in this example 2 times:</font></font></font></p>
+<p style="margin-bottom: 0cm"><br/>
+
+</p>
+<p style="margin-bottom: 0cm"><img src="How%20to%20do%20polling%20with%20RxJs%20and%20Angular_html_e9c1c08af4dae24f.png" name="Image4" align="bottom" width="597" height="196" border="0"/>
+
+</p>
+<p style="margin-bottom: 0cm"><br/>
+
+</p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal"><a name="3999"></a>
+<font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">We
+can use retry to make RxJs retry our HTTP requests in case of
+failure. Since we want to retry as many times as needed, we won’t
+pass any number as a parameter to that operator:</font></font></font></p>
+<p style="margin-bottom: 0cm"><font face="Liberation Mono, monospace">this.allCurrencies$
+= <b>timer(1, 3000)</b>.pipe(</font></p>
+<p style="margin-bottom: 0cm">     <font face="Liberation Mono, monospace">switchMap(()
+=&gt; http.get('http://...')),</font></p>
+<p style="margin-bottom: 0cm">     <font face="Liberation Mono, monospace"><b>retry()</b></font></p>
+<p style="margin-bottom: 0cm"><font face="Liberation Mono, monospace">);</font></p>
+<p style="margin-bottom: 0cm; font-variant: normal; font-style: normal; font-weight: normal">
+<br/>
+
+</p>
+<p style="margin-bottom: 0cm"><br/>
+
+</p>
+<h1 class="western" style="font-variant: normal; letter-spacing: normal; font-style: normal; line-height: 0.62cm; orphans: 2; widows: 2"><a name="526c"></a>
+<font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><b>Let’s
+make sure that we only have one Observable shared by all subscribers</b></font></font></font></h1>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 0.71cm; orphans: 2; widows: 2"><a name="a2e1"></a>
+<font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">Next,
+we want to make sure that every subscriber uses that same polling
+mechanism.</font></font></font></p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 0.71cm; orphans: 2; widows: 2"><a name="97e0"></a>
+<font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">By
+default, RxJs Observables are cold, which means that they create a
+new task for each subscriber as the subscription happens. In our
+case, three subscribers would end up instantiating that polling
+mechanism three times and make three times more HTTP requests.</font></font></font></p>
+<p style="margin-bottom: 0cm"><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">That
+is, of course, unless we use another operator to make that Observable
+shared between all subscribers. And there is an operator for that,
+appropriately called&nbsp;</span></span></span></font></font></font></span><strong><a href="https://rxjs-dev.firebaseapp.com/api/operators/share" target="_blank"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><u><b>share</b></u></font></font></a></strong><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">:</span></span></span></font></font></font></span></p>
+<p style="margin-bottom: 0cm"><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">this.allCurrencies$
+= </span></span></span></font></font></font></span><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="letter-spacing: normal"><span style="font-style: normal"><b>timer(1,
+3000)</b></span></span></font></font></font></span><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">.pipe(</span></span></span></font></font></font></span></p>
+<p style="margin-bottom: 0cm"><span style="font-variant: normal"><font color="#292929"><span style="letter-spacing: normal">
+    <font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">switchMap(()
+=&gt; http.get('http://...')),</span></span></span></font></font></font></span></p>
+<p style="margin-bottom: 0cm"><span style="font-variant: normal"><font color="#292929"><span style="letter-spacing: normal">
+    <font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">retry(),
+</span></span></span></font></font></font></span>
+</p>
+<p style="margin-bottom: 0cm"><span style="font-variant: normal"><font color="#292929"><span style="letter-spacing: normal">
+    </span></font></span><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="letter-spacing: normal"><span style="font-style: normal"><b>share()</b></span></span></font></font></font></span></p>
+<p style="margin-bottom: 0cm"><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">);</span></span></span></font></font></font></span></p>
+<p style="margin-bottom: 0cm"><br/>
+
+</p>
+<h1 class="western" style="font-variant: normal; letter-spacing: normal; font-style: normal"><a name="fcf8"></a>
+<font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><b>Let’s
+add a way to stop polling when the application is destroyed</b></font></font></font></h1>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 0.71cm; orphans: 2; widows: 2"><a name="8439"></a>
+<font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">The
+last issue we have to take care of is to make sure that we properly
+stop the polling process when our application gets destroyed.</font></font></font></p>
+<p style="line-height: 0.71cm; orphans: 2; widows: 2"><a name="8030"></a>
+<span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">The
+easiest way to stop an Observable stream that is currently emitting
+values is to apply the&nbsp;</span></span></font></font></font></span><strong><a href="https://rxjs-dev.firebaseapp.com/api/operators/takeUntil" target="_blank"><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><u><b>takeUntil</b></u></span></font></font></font></span></a></strong><strong><span style="font-variant: normal"><font color="#292929">&nbsp;</font></span></strong><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">operator
+to it:</span></span></font></font></font></span></p>
+<p style="margin-bottom: 0cm"><img src="How%20to%20do%20polling%20with%20RxJs%20and%20Angular_html_3532b0dfa017caee.png" name="Image5" align="bottom" width="831" height="225" border="0"/>
+
+</p>
+<p style="margin-bottom: 0cm"><br/>
+
+</p>
+<p style="margin-bottom: 0cm"><strong><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><b>takeUntil&nbsp;</b></font></font></strong><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">stops
+emitting values from Observable #1 when Observable #2 starts emitting</font></font></p>
+<p style="margin-bottom: 0cm"><br/>
+
+</p>
+<p style="margin-bottom: 0cm"><br/>
+
+</p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 0.71cm; orphans: 2; widows: 2"><a name="ef88"></a>
+<font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">As
+a result, we need another Observable that will emit a value when our
+application gets destroyed.</font></font></font></p>
+<p style="line-height: 0.71cm; orphans: 2; widows: 2"><a name="c816"></a>
+<span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">This
+is achieved by adding a Subject to our service since Subjects are one
+of the easiest ways to create a custom Observable that emits data
+when we want it (for more information about subjects, take a look at
+my&nbsp;</span></span></font></font></font></span><a href="https://blog.angulartraining.com/rxjs-subjects-a-tutorial-4dcce0e9637f" target="_blank"><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><u><span style="font-weight: normal">RxJs
+Subjects tutorial</span></u></span></font></font></font></span></a><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">):</span></span></font></font></font></span></p>
+<p style="line-height: 0.71cm; orphans: 2; widows: 2"><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">private
+</span></span></font></font></font></span><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><b>stopPolling</b></span></font></font></font></span><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">
+= new Subject();</span></span></font></font></font></span></p>
+<p style="line-height: 0.71cm; orphans: 2; widows: 2"><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">ngOnDestroy()
+{</span></span></font></font></font></span></p>
+<p style="line-height: 0.71cm; orphans: 2; widows: 2"><span style="font-variant: normal"><font color="#292929">
+  </font></span><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><b>this.stopPolling.next();</b></span></font></font></font></span></p>
+<p style="line-height: 0.71cm; orphans: 2; widows: 2"><span style="font-variant: normal"><font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">}</span></span></font></font></font></span></p>
+<p style="margin-bottom: 0cm"><br/>
+
+</p>
+<p style="margin-bottom: 0cm"><span style="font-variant: normal"><font color="#292929"><font face="Liberation Mono, monospace"><font size="3" style="font-size: 12pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">Then
+we make sure that our polling process stops when&nbsp;</span></span></span></font></font></font></span><strong><span style="font-variant: normal"><font color="#292929"><font face="Liberation Mono, monospace"><font size="3" style="font-size: 12pt"><span style="letter-spacing: normal"><span style="font-style: normal"><b>stopPolling</b></span></span></font></font></font></span></strong><strong><span style="font-variant: normal"><font color="#292929"><font face="Liberation Mono, monospace"><font size="3" style="font-size: 12pt"><span style="letter-spacing: normal">&nbsp;</span></font></font></font></span></strong><span style="font-variant: normal"><font color="#292929"><font face="Liberation Mono, monospace"><font size="3" style="font-size: 12pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">starts
+emitting:</span></span></span></font></font></font></span></p>
+<p style="margin-bottom: 0cm">this.allCurrencies$ = <b>timer(1,
+3000)</b>.pipe(</p>
+<p style="margin-bottom: 0cm">     switchMap(() =&gt;
+http.get('http://...')),</p>
+<p style="margin-bottom: 0cm">     retry(), 
+</p>
+<p style="margin-bottom: 0cm">     share(),</p>
+<p style="margin-bottom: 0cm">     <b>takeUntil(this.stopPolling)</b></p>
+<p style="margin-bottom: 0cm">);</p>
+<p style="margin-bottom: 0cm; font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal">
+<br/>
+
+</p>
+<p style="margin-bottom: 0cm"><br/>
+
+</p>
+<p style="font-variant: normal; font-style: normal; font-weight: normal; line-height: 0.71cm; orphans: 2; widows: 2">
+<font color="#292929"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">Here
+is a recap of what our service looks like in the end:</font></font></font></p>
+<p style="margin-bottom: 0cm"><br/>
+
+</p>
+<p style="margin-bottom: 0cm"><font face="Liberation Mono, monospace">import
+{ Injectable, OnDestroy } from '@angular/core';</font></p>
+<p style="margin-bottom: 0cm"><font face="Liberation Mono, monospace">import
+{ Observable, timer, Subscription, Subject } from 'rxjs';</font></p>
+<p style="margin-bottom: 0cm"><font face="Liberation Mono, monospace">import
+{ HttpClient } from '@angular/common/http';</font></p>
+<p style="margin-bottom: 0cm"><font face="Liberation Mono, monospace">import
+{ switchMap, tap, share, retry, takeUntil } from 'rxjs/operators';</font></p>
+<p style="margin-bottom: 0cm"><font face="Liberation Mono, monospace">export
+type Currency = 'EUR' | 'USD' | 'GBP';</font></p>
+<p style="margin-bottom: 0cm"><font face="Liberation Mono, monospace">export
+interface CurrencyInfo {</font></p>
+<p style="margin-bottom: 0cm">   <font face="Liberation Mono, monospace">currency:
+Currency;</font></p>
+<p style="margin-bottom: 0cm">   <font face="Liberation Mono, monospace">exchangeRate:
+number;</font></p>
+<p style="margin-bottom: 0cm"><font face="Liberation Mono, monospace">}</font></p>
+<p style="margin-bottom: 0cm"><font face="Liberation Mono, monospace">@Injectable()</font></p>
+<p style="margin-bottom: 0cm"><font face="Liberation Mono, monospace">export
+class CurrencyService implements OnDestroy {</font></p>
+<p style="margin-bottom: 0cm">   <font face="Liberation Mono, monospace">private
+<b>allCurrencies$</b>: Observable&lt;CurrencyInfo[]&gt;;</font></p>
+<p style="margin-bottom: 0cm">  <font face="Liberation Mono, monospace">private
+stopPolling = new Subject();</font></p>
+<p style="margin-bottom: 0cm">  <font face="Liberation Mono, monospace">constructor(private
+http: HttpClient) {</font></p>
+<p style="margin-bottom: 0cm">    <font face="Liberation Mono, monospace"><b>this.allCurrencies$
+= timer(1, 3000).pipe(</b></font></p>
+<p style="margin-bottom: 0cm">       <font face="Liberation Mono, monospace"><b>switchMap(()
+=&gt;
+http.get&lt;CurrencyInfo[]&gt;('http://localhost:8000/currencyInfo')),</b></font></p>
+<p style="margin-bottom: 0cm">       <font face="Liberation Mono, monospace"><b>retry(),</b></font></p>
+<p style="margin-bottom: 0cm">       <font face="Liberation Mono, monospace"><b>share(),</b></font></p>
+<p style="margin-bottom: 0cm">       <font face="Liberation Mono, monospace"><b>takeUntil(this.stopPolling)</b></font></p>
+<p style="margin-bottom: 0cm">    <font face="Liberation Mono, monospace"><b>);</b></font></p>
+<p style="margin-bottom: 0cm">  <font face="Liberation Mono, monospace">}</font></p>
+<p style="margin-bottom: 0cm">  <font face="Liberation Mono, monospace">getAllCurrencies():
+Observable&lt;CurrencyInfo[]&gt; {</font></p>
+<p style="margin-bottom: 0cm">      <font face="Liberation Mono, monospace">return
+<b>this.allCurrencies$</b>;</font></p>
+<p style="margin-bottom: 0cm">  <font face="Liberation Mono, monospace">}</font></p>
+<p style="margin-bottom: 0cm">  <font face="Liberation Mono, monospace">ngOnDestroy()
+{</font></p>
+<p style="margin-bottom: 0cm">     <font face="Liberation Mono, monospace">this.stopPolling.next();</font></p>
+<p style="margin-bottom: 0cm">  <font face="Liberation Mono, monospace">}</font></p>
+<p style="margin-bottom: 0cm"><font face="Liberation Mono, monospace">}</font></p>
+</body>
+</html>

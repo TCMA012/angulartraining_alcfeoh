@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 6.4.7.2 (Linux)"/>
+	<meta name="created" content="2023-03-31T20:16:29.274162601"/>
+	<meta name="changed" content="2023-03-31T20:23:41.140881250"/>
+	<style type="text/css">
+		h2.cjk { font-family: "Noto Serif CJK SC" }
+		h2.ctl { font-family: "Lohit Devanagari" }
+		code.cjk { font-family: "Noto Sans Mono CJK SC", monospace }
+	</style>
+</head>
+<body lang="en-CA" dir="ltr"><p><a href="https://www.angulartraining.com/daily-newsletter/">https://www.angulartraining.com/daily-newsletter/</a></p>
+<h2 class="western"><a href="https://www.angulartraining.com/daily-newsletter/subject-behaviorsubject-and-replaysubject/"><font color="#1e73be"><span style="text-decoration: none"><font face="Roboto Slab, serif"><font size="5" style="font-size: 17pt"><b><span style="background: transparent">Subject,
+BehaviorSubject, and ReplaySubject</span></b></font></font></span></font></a></h2>
+<p style="margin-right: 0.29cm; margin-bottom: 0.66cm">March 31, 2023</p>
+<p style="margin-right: 0.29cm; margin-bottom: 0.66cm"><span style="font-variant: normal"><font color="#6b6b6b"><font face="Georgia"><font size="2" style="font-size: 8pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">We
+introduced&nbsp;</span></span></span></font></font></font></span><a href="https://www.angulartraining.com/daily-newsletter/rxjs-subjects-when-and-why/" target="_blank"><span style="font-variant: normal"><font color="#1e73be"><span style="text-decoration: none"><font face="Georgia"><font size="2" style="font-size: 8pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal"><span style="background: transparent">RxJs
+Subjects</span></span></span></span></font></font></span></font></span></a><span style="font-variant: normal"><font color="#6b6b6b"><font face="Georgia"><font size="2" style="font-size: 8pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">&nbsp;a
+few weeks back.</span></span></span></font></font></font></span></p>
+<h2 class="western" style="margin-top: 0.44cm; margin-bottom: 0.22cm; line-height: 110%; orphans: 2; widows: 2">
+<span style="font-variant: normal"><font color="#1e73be"><font face="Roboto Slab, serif"><font size="4" style="font-size: 15pt"><span style="letter-spacing: normal"><span style="font-style: normal"><b>BehaviorSubject</b></span></span></font></font></font></span></h2>
+<h2 class="western" style="margin-top: 0.44cm; margin-bottom: 0.22cm; line-height: 110%; orphans: 2; widows: 2">
+<span style="font-variant: normal"><font color="#6b6b6b"><font face="Georgia"><font size="2" style="font-size: 8pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">The
+most common type of Subject used with Angular is&nbsp;</span></span></span></font></font></font></span><span style="display: inline-block; border: none; padding: 0cm"><a href="https://blog.angulartraining.com/rxjs-subjects-a-tutorial-4dcce0e9637f" target="_blank"><span style="font-variant: normal"><font color="#1e73be"><span style="text-decoration: none"><font face="Menlo, Monaco, Consolas, Courier New, monospace"><font size="1" style="font-size: 7pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal"><span style="background: transparent"><code class="western">BehaviorSubject</span></span></span></span></span></font></font></span></font></span></a></code><span style="font-variant: normal"><font color="#6b6b6b"><font face="Georgia"><font size="2" style="font-size: 8pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">.
+Why is that? Because a&nbsp;</span></span></span></font></font></font></span><span style="display: inline-block; border: none; padding: 0cm"><span style="font-variant: normal"><font color="#c7254e"><font face="Menlo, Monaco, Consolas, Courier New, monospace"><font size="1" style="font-size: 7pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal"><span style="background: #f9f2f4"><code class="western">BehaviorSubject</span></span></span></span></span></font></font></font></span></code><span style="font-variant: normal"><font color="#6b6b6b"><font face="Georgia"><font size="2" style="font-size: 8pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">&nbsp;has
+two exciting features that a plain&nbsp;</span></span></span></font></font></font></span><span style="display: inline-block; border: none; padding: 0cm"><span style="font-variant: normal"><font color="#c7254e"><font face="Menlo, Monaco, Consolas, Courier New, monospace"><font size="1" style="font-size: 7pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal"><span style="background: #f9f2f4"><code class="western">Subject</span></span></span></span></span></font></font></font></span></code><span style="font-variant: normal"><font color="#6b6b6b"><font face="Georgia"><font size="2" style="font-size: 8pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">&nbsp;does
+not have:</span></span></span></font></font></font></span></h2>
+<ul>
+	<li><p style="margin-bottom: 0.22cm; font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; orphans: 2; widows: 2">
+	<font color="#6b6b6b"><font face="Georgia"><font size="2" style="font-size: 8pt">It
+	starts with a default value, which means it is never empty.</font></font></font></p>
+	<li><p style="margin-bottom: 0.22cm; font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; orphans: 2; widows: 2">
+	<font color="#6b6b6b"><font face="Georgia"><font size="2" style="font-size: 8pt">When
+	we subscribe to a behavior subject, it will immediately give us the
+	last emitted value.</font></font></font></p>
+</ul>
+<p style="margin-bottom: 0.22cm; orphans: 2; widows: 2"><span style="font-variant: normal"><font color="#6b6b6b"><font face="Georgia"><font size="2" style="font-size: 8pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">Imagine
+subscribing to a magazine and receiving its latest published issue
+immediately. That’s what a&nbsp;</span></span></span></font></font></font></span><span style="display: inline-block; border: none; padding: 0cm"><span style="font-variant: normal"><font color="#c7254e"><font face="Menlo, Monaco, Consolas, Courier New, monospace"><font size="1" style="font-size: 7pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal"><span style="background: #f9f2f4"><code class="western">BehaviorSubject</span></span></span></span></span></font></font></font></span></code><span style="font-variant: normal"><font color="#6b6b6b"><font face="Georgia"><font size="2" style="font-size: 8pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">&nbsp;does.
+This is helpful if you have components that need to know about the
+app’s current user. When the component subscribes to the “current
+user,” we want to get that info immediately and not wait for the
+next user update.</span></span></span></font></font></font></span></p>
+<p style="margin-bottom: 0cm; font-variant: normal; letter-spacing: normal; orphans: 2; widows: 2">
+<font color="#6b6b6b"><img src="Subject,%20BehaviorSubject,%20ReplaySubject_html_2bba761e13920dd0.png" name="Image1" align="bottom" width="522" height="263" border="0"/>
+</font></p>
+<p style="margin-bottom: 0.22cm; orphans: 2; widows: 2"><span style="font-variant: normal"><font color="#6b6b6b"><font face="Georgia"><font size="2" style="font-size: 8pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">Also,
+since behavior subjects always have a value, they have a&nbsp;</span></span></span></font></font></font></span><span style="display: inline-block; border: none; padding: 0cm"><span style="font-variant: normal"><font color="#c7254e"><font face="Menlo, Monaco, Consolas, Courier New, monospace"><font size="1" style="font-size: 7pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal"><span style="background: #f9f2f4"><code class="western">getValue(</span></span></span></span></span></font></font></font></span></code><span style="font-variant: normal"><font color="#6b6b6b"><font face="Georgia"><font size="2" style="font-size: 8pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">)
+method that synchronously returns the current value.</span></span></span></font></font></font></span></p>
+<h2 class="western" style="margin-top: 0.44cm; margin-bottom: 0.22cm; font-variant: normal; letter-spacing: normal; font-style: normal; line-height: 110%; orphans: 2; widows: 2">
+<font color="#1e73be"><font face="Roboto Slab, serif"><font size="4" style="font-size: 15pt"><b>ReplaySubject</b></font></font></font></h2>
+<p style="margin-bottom: 0.22cm; orphans: 2; widows: 2"><span style="font-variant: normal"><font color="#6b6b6b"><font face="Georgia"><font size="2" style="font-size: 8pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">A&nbsp;</span></span></span></font></font></font></span><span style="display: inline-block; border: none; padding: 0cm"><a href="https://blog.angulartraining.com/rxjs-subjects-a-tutorial-4dcce0e9637f#:~:text=Replay%20Subjects,to%20new%20subscribers." target="_blank"><span style="font-variant: normal"><font color="#1e73be"><span style="text-decoration: none"><font face="Menlo, Monaco, Consolas, Courier New, monospace"><font size="1" style="font-size: 7pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal"><span style="background: transparent"><code class="western">ReplaySubject</span></span></span></span></span></font></font></span></font></span></a></code><span style="font-variant: normal"><font color="#6b6b6b"><font face="Georgia"><font size="2" style="font-size: 8pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">&nbsp;is
+very similar to a&nbsp;</span></span></span></font></font></font></span><span style="display: inline-block; border: none; padding: 0cm"><span style="font-variant: normal"><font color="#c7254e"><font face="Menlo, Monaco, Consolas, Courier New, monospace"><font size="1" style="font-size: 7pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal"><span style="background: #f9f2f4"><code class="western">BehaviorSubject</span></span></span></span></span></font></font></font></span></code><span style="font-variant: normal"><font color="#6b6b6b"><font face="Georgia"><font size="2" style="font-size: 8pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">,
+with two key differences:</span></span></span></font></font></font></span></p>
+<ul>
+	<li><p style="margin-bottom: 0.22cm; font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; orphans: 2; widows: 2">
+	<font color="#6b6b6b"><font face="Georgia"><font size="2" style="font-size: 8pt">No
+	default value</font></font></font></p>
+	<li><p style="margin-bottom: 0.22cm; font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; orphans: 2; widows: 2">
+	<font color="#6b6b6b"><font face="Georgia"><font size="2" style="font-size: 8pt">Can
+	replay more than just the last value</font></font></font></p>
+</ul>
+<p style="margin-bottom: 0.22cm; font-variant: normal; letter-spacing: normal; font-style: normal; font-weight: normal; orphans: 2; widows: 2">
+<font color="#6b6b6b"><font face="Georgia"><font size="2" style="font-size: 8pt">The
+constructor parameter determines how many values should be replayed
+to new subscribers:</font></font></font></p>
+<p style="margin-bottom: 0cm; font-variant: normal; letter-spacing: normal; orphans: 2; widows: 2">
+<font color="#6b6b6b"><img src="Subject,%20BehaviorSubject,%20ReplaySubject_html_e5891f0d0cfe11ba.png" name="Image2" align="bottom" width="517" height="368" border="0"/>
+</font></p>
+<h2 class="western" style="margin-top: 0.44cm; margin-bottom: 0.22cm; font-variant: normal; letter-spacing: normal; font-style: normal; line-height: 110%; orphans: 2; widows: 2">
+<font color="#1e73be"><font face="Roboto Slab, serif"><font size="4" style="font-size: 15pt"><b>Subject</b></font></font></font></h2>
+<p style="margin-bottom: 0.22cm; orphans: 2; widows: 2"><span style="font-variant: normal"><font color="#6b6b6b"><font face="Georgia"><font size="2" style="font-size: 8pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">A
+plain&nbsp;</span></span></span></font></font></font></span><span style="display: inline-block; border: none; padding: 0cm"><span style="font-variant: normal"><font color="#c7254e"><font face="Menlo, Monaco, Consolas, Courier New, monospace"><font size="1" style="font-size: 7pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal"><span style="background: #f9f2f4"><code class="western">Subject</span></span></span></span></span></font></font></font></span></code><span style="font-variant: normal"><font color="#6b6b6b"><font face="Georgia"><font size="2" style="font-size: 8pt"><span style="letter-spacing: normal"><span style="font-style: normal"><span style="font-weight: normal">&nbsp;has
+none of the above capabilities. When a value is emitted, current
+subscribers receive it, but future subscribers won’t. There is no
+replaying of the latest value(s), which makes plain Subjects less
+interesting to work with.</span></span></span></font></font></font></span></p>
+<p><br/>
+<br/>
+
+</p>
+</body>
+</html>
