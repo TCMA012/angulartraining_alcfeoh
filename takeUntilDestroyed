@@ -1,0 +1,15 @@
+https://www.angulartraining.com/daily-newsletter/
+Anti-pattern series: Not unsubscribing from Observables
+May 15, 2023
+
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
+getName(): Observable<string> {
+    /*
+    This is done once for all -
+    Nothing else to do in your components
+    */
+    return this.http.get<string>('...').pipe(
+        takeUntilDestroyed()
+    );
+}

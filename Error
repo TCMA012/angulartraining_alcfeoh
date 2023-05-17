@@ -1,0 +1,59 @@
+Error: src/app/app.component.html:2:54 - error TS4111: Property 'creditCard' comes from an index signature, so it must be accessed with ['creditCard'].
+
+2 <div *ngIf="cardControl.dirty && cardControl.errors?.creditCard" class="error">
+                                                       ~~~~~~~~~~
+
+  src/app/app.component.ts:9:16
+    9   templateUrl: './app.component.html',
+                     ~~~~~~~~~~~~~~~~~~~~~~
+    Error occurs in the template of component AppComponent.
+
+
+Error: src/app/app.component.html:3:25 - error TS2531: Object is possibly 'null'.
+
+3   {{ cardControl.errors.creditCard }}
+                          ~~~~~~~~~~
+
+  src/app/app.component.ts:9:16
+    9   templateUrl: './app.component.html',
+                     ~~~~~~~~~~~~~~~~~~~~~~
+    Error occurs in the template of component AppComponent.
+
+
+Error: src/app/app.component.html:3:25 - error TS4111: Property 'creditCard' comes from an index signature, so it must be accessed with ['creditCard'].
+
+3   {{ cardControl.errors.creditCard }}
+                          ~~~~~~~~~~
+
+  src/app/app.component.ts:9:16
+    9   templateUrl: './app.component.html',
+                     ~~~~~~~~~~~~~~~~~~~~~~
+    Error occurs in the template of component AppComponent.
+
+
+Error: src/app/app.component.ts:16:5 - error TS2769: No overload matches this call.
+  Overload 1 of 5, '(value: string | FormControlState<string>, opts: FormControlOptions & { nonNullable: true; }): FormControl<string>', gave the following error.
+    Argument of type '(control: FormControl<any>) => ValidationErrors | null' is not assignable to parameter of type 'FormControlOptions & { nonNullable: true; }'.
+      Type '(control: FormControl<any>) => ValidationErrors | null' is not assignable to type '{ nonNullable: true; }'.
+  Overload 2 of 5, '(value: string | FormControlState<string>, opts: FormControlOptions & { initialValueIsDefault: true; }): FormControl<string>', gave the following error.
+    Argument of type '(control: FormControl<any>) => ValidationErrors | null' is not assignable to parameter of type 'FormControlOptions & { initialValueIsDefault: true; }'.
+      Type '(control: FormControl<any>) => ValidationErrors | null' is not assignable to type '{ initialValueIsDefault: true; }'.
+  Overload 3 of 5, '(value: string | FormControlState<string>, validatorOrOpts?: ValidatorFn | ValidatorFn[] | FormControlOptions | null | undefined, asyncValidator?: AsyncValidatorFn | ... 2 more ... | undefined): FormControl<...>', gave the following error.
+    Argument of type '(control: FormControl<any>) => ValidationErrors | null' is not assignable to parameter of type 'ValidatorFn | ValidatorFn[] | FormControlOptions | null | undefined'.
+      Type '(control: FormControl<any>) => ValidationErrors | null' is not assignable to type 'ValidatorFn'.
+        Types of parameters 'control' and 'control' are incompatible.
+          Type 'AbstractControl<any, any>' is missing the following properties from type 'FormControl<any>': defaultValue, registerOnChange, registerOnDisabledChange
+
+16     CreditCardValidator.validateCcNumber
+       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  src/app/app.component.ts:16:5
+    16     CreditCardValidator.validateCcNumber
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Did you mean to call this expression?
+
+
+=
+
+<div *ngIf="cardControl.dirty && cardControl.errors?.['creditCard']" class="error">
+  

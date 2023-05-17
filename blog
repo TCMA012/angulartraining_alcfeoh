@@ -1,0 +1,116 @@
+cdm 
+cd angulartraining_alcfeoh
+
+
+https://www.angulartraining.com/daily-newsletter/page/5/
+<div *ngIf="user$ | async as user">
+   <p>First name: {{ user.firstName }}</p>
+   <p>Last name: {{ user.lastName }}</p>
+</div>
+
+<ng-template [ngIf]="user$ | async" let-user>
+   <p>First name: {{ user.firstName }}</p>
+   <p>Last name: {{ user.lastName }}</p>
+</ng-template>
+
+
+
+JSON server reads a JSON file and turns it automatically into a RESTful web server.
+It supports pagination, full-text search, and custom routes
+https://www.npmjs.com/package/json-server
+https://developer.ibm.com/articles/ws-restful/
+https://blog.angulartraining.com/fake-your-angular-backend-until-you-make-it-8d145f713e14
+http://localhost:3000/posts/1
+
+
+
+generate mock data
+https://www.mockaroo.com/
+
+mock-data-demo0
+ng new mock-data-demo
+
+ providers: [{ provide: UserService, useClass: FakeUserService }],
+
+
+
+
+RxJs withLatestFrom operator
+January 26, 2023
+with two dropdowns that depend on one another. 
+A selection in the first dropdown impacts the values displayed in the second one (selecting a continent filters out the countries shown in the second dropdown:
+ng new at-rxjs-demo4
+
+
+
+This operator takes two or more Observables and turns them into one single Observable that emits a new value whenever the source Observable emits something new.
+
+The important thing to note here is that only one Observable triggers updates in the output Observable. As a result, withLatestFrom is a great option when you want a user action to trigger an update in the user interface (think about data table filters, inter-connected dropdowns, etc.)
+
+
+
+rxmarbles.com
+
+
+
+https://blog.angulartraining.com/ngrxlet-a-better-version-of-the-async-pipe-37bfc5c7a5ec
+@ngrx/component ngrxLet 
+
+
+
+https://blog.angulartraining.com/dynamic-filtering-with-rxjs-and-angular-forms-a-tutorial-6daa3c44076a
+https://www.angulartraining.com/daily-newsletter/page/6/
+https://rxjs.dev/api/operators/combineLatestWith
+RxJs combineLatest operator
+A common gotcha of combineLatest is that the operator waits for all observable sources to emit at least one value before returning something, so it can be helpful to use it alongside the startWith operator
+
+ng new angular-filtering-rxjs
+
+
+
+https://blog.angulartraining.com/how-to-format-dates-and-numbers-with-angular-e39d3cf224be
+https://www.angulartraining.com/daily-newsletter/page/6/
+ng new ng-common-functions
+
+
+
+since Angular 15, we can now set a default date format (and timezone) by configuring a new injection token called DATE_PIPE_DEFAULT_OPTIONS.
+It works by adding the following code to your dependency injection config (array of providers) in app.modules.ts:
+providers: [
+  {
+    provide: DATE_PIPE_DEFAULT_OPTIONS, useValue: {dateFormat: 'MM/dd/yy'}
+  }
+]
+
+
+
+RxJs switchMap operator
+January 3, 2023
+https://stackblitz.com/edit/at-rxjs-demo7?file=src%2Fapp%2Fexchange-rate.service.ts
+
+ng new at-rxjs-demo7
+
+
+
+<pre>myData | json</pre>
+
+
+
+https://blog.angulartraining.com/tutorial-the-magic-of-template-reference-variables-3183f0a0d9d1
+
+https://compodoc.app/
+
+
+
+https://www.angulartraining.com/daily-newsletter/page/3/
+https://blog.angulartraining.com/how-to-write-async-form-validators-with-angular-df99d016066c
+https://stackblitz.com/edit/ng-async-validator?file=src%2Fapp%2Fapp.component.html
+ng new ng-async-validator
+
+
+
+https://www.angulartraining.com/daily-newsletter/rxjs-debouncetime-operator/
+https://stackblitz.com/edit/at-debouncetime?file=app%2Fcreditcardvalidator.directive.ts,app%2Fapp.component.html,app%2Fapp.component.ts
+
+ng new at-debouncetime
+ng new at-debouncetime2
