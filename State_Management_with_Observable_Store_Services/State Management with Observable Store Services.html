@@ -1,0 +1,250 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 6.4.7.2 (Linux)"/>
+	<meta name="created" content="2023-09-22T20:00:20.443967558"/>
+	<meta name="changed" content="2023-09-22T20:52:23.449848471"/>
+	<style type="text/css">
+		@page { margin: 2cm }
+		h1 { margin-bottom: 0.21cm }
+		h1.western { font-family: "Liberation Serif", serif }
+		h1.cjk { font-family: "Noto Serif CJK SC"; font-size: 24pt }
+		h1.ctl { font-family: "Lohit Devanagari"; font-size: 24pt }
+		p { margin-bottom: 0.25cm; line-height: 115% }
+		pre.cjk { font-family: "Noto Sans Mono CJK SC", monospace }
+		a:link { so-language: zxx }
+	</style>
+</head>
+<body lang="en-CA" dir="ltr"><h1 class="western"><font size="4" style="font-size: 14pt">State
+Management with Observable Store Services</font></h1>
+<p style="margin-bottom: 0cm"><font size="3" style="font-size: 12pt">https://blog.angulartraining.com/tutorial-state-management-with-observable-store-services-5ba53d87ad94</font></p>
+<p><a href="https://angulartraining.medium.com/?source=post_page-----5ba53d87ad94--------------------------------"><font size="3" style="font-size: 12pt">Alain
+Chautard</font></a></p>
+<p><a href="https://blog.angulartraining.com/?source=post_page-----5ba53d87ad94--------------------------------"><font size="3" style="font-size: 12pt">Angular
+Training</font></a></p>
+<p><font size="3" style="font-size: 12pt">Oct 29, 2019</font></p>
+<p><img src="State%20Management%20with%20Observable%20Store%20Services_html_5e029044bce3bbb4.png" name="Image2" align="left" width="763" height="664" border="0"/>
+<br/>
+<br/>
+
+</p>
+<p><a name="f8d9"></a><font size="3" style="font-size: 12pt">One of
+the big topics in the Angular community is “How to do state
+management? And do I even need it?”.</font></p>
+<p><a name="f60a"></a><font size="3" style="font-size: 12pt">In this
+post, I’m going to cover how you can evolve an Angular service into
+a reactive solution without even needing NgRx or any other
+redux-based library. Let’s get started!</font></p>
+<h1 class="western"><a name="e266"></a><font size="3" style="font-size: 12pt">A
+basic Angular service</font></h1>
+<p><a name="48f1"></a><font size="3" style="font-size: 12pt">I review
+a lot of Angular code bases as part of <a href="http://angulartraining.com/#services" target="_blank">my
+consulting activity</a>. Most people write their services the
+following way:</font></p>
+<pre class="western"><a name="3f9e"></a><font size="3" style="font-size: 12pt">@Injectable({</font>
+  <font size="3" style="font-size: 12pt">providedIn: 'root'</font>
+<font size="3" style="font-size: 12pt">})</font>
+<font size="3" style="font-size: 12pt">export class AirportService {</font>
+  <font size="3" style="font-size: 12pt">private airports: Airport[];</font>
+  <font size="3" style="font-size: 12pt">constructor(http: HttpClient) {</font>
+      <font size="3" style="font-size: 12pt">http.get('myserver.com/airports')</font>
+         <font size="3" style="font-size: 12pt">.subscribe(data =&gt; this.airports = data);</font>
+   <font size="3" style="font-size: 12pt">}</font>
+   <font size="3" style="font-size: 12pt">getAirports() {</font>
+      <font size="3" style="font-size: 12pt">return this.airports;</font>
+   <font size="3" style="font-size: 12pt">}</font>
+<font size="3" style="font-size: 12pt">}</font></pre><p>
+<a name="de71"></a><font size="3" style="font-size: 12pt">Then
+components inject that service and create bindings to it like this:</font></p>
+<pre class="western"><a name="3b92"></a><font size="3" style="font-size: 12pt">&lt;li *ngFor=&quot;let airport of service.getAirports()&quot;&gt;</font>
+   <font size="3" style="font-size: 12pt">{{airport.code}} - {{airport.name}}</font>
+<font size="3" style="font-size: 12pt">&lt;/li&gt;</font></pre><p>
+<a name="ba41"></a><font size="3" style="font-size: 12pt">This works,
+but there is a major downside to the above syntax: Angular has no way
+to know when the list of airports gets updated. As a result, the
+framework has to call </font><strong><font size="3" style="font-size: 12pt">service.getAirports()</font></strong>
+<font size="3" style="font-size: 12pt">way too often, which is not
+efficient.</font></p>
+<p><font size="3" style="font-size: 12pt">One quick fix is to use a
+public service property instead of relying on a getter method:</font></p>
+<pre class="western"><a name="3baf"></a><a name="33cc"></a><font size="3" style="font-size: 12pt">export class AirportService {</font>
+  <font size="3" style="font-size: 12pt">airports: Airport[];</font>
+  
+   <font size="3" style="font-size: 12pt">constructor(http: HttpClient) {</font>
+      <font size="3" style="font-size: 12pt">http.get('myserver.com/airports')</font>
+         <font size="3" style="font-size: 12pt">.subscribe(data =&gt; this.airports = data);</font>
+   <font size="3" style="font-size: 12pt">}</font>
+<font size="3" style="font-size: 12pt">}</font></pre><p>
+<a name="71b0"></a><font size="3" style="font-size: 12pt">And our
+component template becomes:</font></p>
+<pre class="western"><a name="7980"></a><font size="3" style="font-size: 12pt">&lt;li *ngFor=&quot;let airport of service.airports&quot;&gt;</font>
+   <font size="3" style="font-size: 12pt">{{airport.code}} - {{airport.name}}</font>
+<font size="3" style="font-size: 12pt">&lt;/li&gt;</font></pre><p>
+<a name="0e1f"></a><font size="3" style="font-size: 12pt">The above
+code fixes the change detection issue: Angular can now tell whether
+the list of airports has changed or not just by checking the array
+reference directly.</font></p>
+<p><a name="2eaf"></a><font size="3" style="font-size: 12pt">But that
+approach introduces a new problem: The list of airports is now
+public, which means that any component can edit it. That list is not
+read-only anymore.</font></p>
+<h1 class="western"><a name="ea2f"></a><font size="3" style="font-size: 12pt">Observables
+to the rescue</font></h1>
+<p><a name="1f9b"></a><font size="3" style="font-size: 12pt">Now is
+the time to consider using Observables to manage all of this and
+propagate state updates to all subscribers.</font></p>
+<p><a name="96a2"></a><font size="3" style="font-size: 12pt">Let’s
+use a Subject so we can emit data to all subscribers easily (for more
+information on that topic, read my <a href="https://blog.angulartraining.com/rxjs-subjects-a-tutorial-4dcce0e9637f" target="_blank">tutorial
+on Subjects</a>):</font></p>
+<pre class="western"><a name="cc2e"></a><font size="3" style="font-size: 12pt">export class AirportService {</font>
+  <font size="3" style="font-size: 12pt">private airports$ = new Subject&lt;Airport[]&gt;();</font>
+  <font size="3" style="font-size: 12pt">constructor () {</font>
+    <font size="3" style="font-size: 12pt">http.get('myserver.com/airports')</font>
+         <font size="3" style="font-size: 12pt">.subscribe(data =&gt; this.airports$.next(data));</font>
+  <font size="3" style="font-size: 12pt">}</font>
+  <font size="3" style="font-size: 12pt">getAirports(): Observable&lt;Airport[]&gt; {</font>
+    <font size="3" style="font-size: 12pt">return this.airports$.asObservable();</font>
+  <font size="3" style="font-size: 12pt">}</font>
+<font size="3" style="font-size: 12pt">}</font></pre><p>
+<a name="31a9"></a><font size="3" style="font-size: 12pt">Note that
+we do not expose the Subject reference itself. That way, subscribers
+can’t use the </font><strong><font size="3" style="font-size: 12pt">next()</font></strong>
+<font size="3" style="font-size: 12pt">method and mess with the state
+of our array of data. Instead, we just expose it as an </font><strong><font size="3" style="font-size: 12pt">Observable</font></strong><font size="3" style="font-size: 12pt">.</font></p>
+<p><a name="33f0"></a><font size="3" style="font-size: 12pt">And our
+component template becomes:</font></p>
+<pre class="western"><a name="3f2c"></a><font size="3" style="font-size: 12pt">&lt;li *ngFor=&quot;let airport of airports$ | async&quot;&gt;</font>
+   <font size="3" style="font-size: 12pt">{{airport.code}} - {{airport.name}}</font>
+<font size="3" style="font-size: 12pt">&lt;/li&gt;</font></pre><p>
+<a name="eefc"></a><font size="3" style="font-size: 12pt">Its
+Typescript code would look like this:</font></p>
+<pre class="western"><a name="dffb"></a><font size="3" style="font-size: 12pt">export class AirportsComponent {</font>
+   <font size="3" style="font-size: 12pt">airports$: Observable&lt;Airport[]&gt;</font>
+    <font size="3" style="font-size: 12pt">constructor(private service: AirportService) {</font>
+     <font size="3" style="font-size: 12pt">this.airports$ = service.getAirports();</font>
+   <font size="3" style="font-size: 12pt">}</font>
+<font size="3" style="font-size: 12pt">}</font></pre><p>
+<a name="089c"></a><font size="3" style="font-size: 12pt">This
+solution works and fixes both issues mentioned earlier with regular
+“non-reactive” services.</font></p>
+<p><a name="dda4"></a><font size="3" style="font-size: 12pt">What if
+we want to add airports to the list? Let’s add a method to our
+service just as easily:</font></p>
+<pre class="western"><a name="1708"></a><font size="3" style="font-size: 12pt">addAirport(code: string, name: string) {</font>
+  <font size="3" style="font-size: 12pt">const newAirports = [...this.airports$.getValue(), {code, name}];</font>
+  <font size="3" style="font-size: 12pt">this.airports$.next(newAirports);</font>
+<font size="3" style="font-size: 12pt">}</font></pre><p>
+<a name="1f5b"></a><font size="3" style="font-size: 12pt">Note that
+I’m applying the data immutability principle in the above code.
+Instead of adding a new airport to the array, I create a brand new
+array with the new airport appended at the end of it.</font></p>
+<h1 class="western"><a name="bc99"></a><strong><font size="3" style="font-size: 12pt">Should
+I apply that recipe everywhere?</font></strong></h1>
+<p><a name="d24f"></a><font size="3" style="font-size: 12pt">I
+definitely think so. We can push that idea even further. Since all of
+these data services are going to follow a similar pattern (subject
+with a getter and a setter), why not refactor that code in a specific
+class that uses generic types?</font></p>
+<pre class="western"><a name="8c9a"></a><font size="3" style="font-size: 12pt">export class Store&lt;T&gt; {</font>
+  <font size="3" style="font-size: 12pt">// Using a behavior subject so we can provide a default value</font>
+  <font size="3" style="font-size: 12pt">private state$: BehaviorSubject&lt;T&gt;;</font>
+  <font size="3" style="font-size: 12pt">protected constructor (initialState: T) {</font>
+     <font size="3" style="font-size: 12pt">// Setting the default state</font>
+     <font size="3" style="font-size: 12pt">this.state$ = new BehaviorSubject(initialState);</font>
+  <font size="3" style="font-size: 12pt">}</font>
+  <font size="3" style="font-size: 12pt">getState(): Observable&lt;T&gt; {</font>
+    <font size="3" style="font-size: 12pt">return this.state$.asObservable();</font>
+  <font size="3" style="font-size: 12pt">}</font>
+  <font size="3" style="font-size: 12pt">setState(nextState: T): void {</font>
+    <font size="3" style="font-size: 12pt">this.state$.next(nextState);</font>
+  <font size="3" style="font-size: 12pt">}</font>
+<font size="3" style="font-size: 12pt">}</font></pre><p>
+<a name="2265"></a><font size="3" style="font-size: 12pt">Did we just
+create our own NgRx store? Sort of. Our version is definitely
+simplified. Let’s call it an </font><strong><font size="3" style="font-size: 12pt">Observable
+Store Service</font></strong><font size="3" style="font-size: 12pt">.</font></p>
+<p><a name="6e23"></a><font size="3" style="font-size: 12pt">Now our
+</font><strong><font size="3" style="font-size: 12pt">AirportService
+</font></strong><font size="3" style="font-size: 12pt">looks like
+this:</font></p>
+<pre class="western"><a name="397c"></a><font size="3" style="font-size: 12pt">export class AirportService extends Store&lt;Airport[]&gt;{</font>
+  <font size="3" style="font-size: 12pt">constructor() {</font>
+    <font size="3" style="font-size: 12pt">super([{code: 'SMF', name: &quot;Sacramento International&quot;}]);</font>
+  <font size="3" style="font-size: 12pt">}</font>
+  <font size="3" style="font-size: 12pt">addAirport(code: string, name: string) {</font>
+    <font size="3" style="font-size: 12pt">const newState = [...this.getValue(), {code, name}];</font>
+    <font size="3" style="font-size: 12pt">this.setState(newState);</font>
+  <font size="3" style="font-size: 12pt">}</font>
+<font size="3" style="font-size: 12pt">}</font></pre><p>
+<a name="2869"></a><font size="3" style="font-size: 12pt">At this
+point, we have a lightweight state management strategy in place. Note
+that this strategy does use most parts of the Redux pattern:</font></p>
+<ul>
+	<li><p style="margin-bottom: 0cm"><a name="c264"></a><font size="3" style="font-size: 12pt">The
+	Subject in our Store class holds the current state of our data. It’s
+	the </font><strong><font size="3" style="font-size: 12pt">single
+	point of truth</font></strong><font size="3" style="font-size: 12pt">.</font></p>
+	<li><p style="margin-bottom: 0cm"><a name="811b"></a><font size="3" style="font-size: 12pt">The
+	</font><strong><font size="3" style="font-size: 12pt">addAirport
+	</font></strong><font size="3" style="font-size: 12pt">method in our
+	AirportService is similar to a </font><strong><font size="3" style="font-size: 12pt">reducer
+	function</font></strong> <font size="3" style="font-size: 12pt">that
+	updates that state.</font></p>
+	<li><p><a name="4f32"></a><strong><font size="3" style="font-size: 12pt">Dispatching
+	an action</font></strong> <font size="3" style="font-size: 12pt">to
+	change the state amounts to calling the </font><strong><font size="3" style="font-size: 12pt">addAirport
+	</font></strong><font size="3" style="font-size: 12pt">method.</font></p>
+</ul>
+<p><a name="3d20"></a><font size="3" style="font-size: 12pt">What’s
+nice about that approach is that it reduces the amount of boilerplate
+code to a strict minimum. I can immediately see all actions available
+on my Airports data set just by looking at the methods of
+</font><strong><font size="3" style="font-size: 12pt">AirportService</font></strong><font size="3" style="font-size: 12pt">.</font></p>
+<p><a name="5df2"></a><font size="3" style="font-size: 12pt">In order
+to see the full source code of that example, head to the <a href="https://stackblitz.com/edit/ng-state-store?file=src%2Fapp%2Fairports%2Fairport.service.ts" target="_blank">following
+StackBlitz</a>:</font></p>
+<p><font size="3" style="font-size: 12pt">import { Injectable } from
+'@angular/core';</font></p>
+<p><font size="3" style="font-size: 12pt">import { Airport } from
+'./airport';</font></p>
+<p><font size="3" style="font-size: 12pt">import { Store } from
+'../store.class';</font></p>
+<p><br/>
+<br/>
+
+</p>
+<p><font size="3" style="font-size: 12pt">@Injectable({</font></p>
+<p><font size="3" style="font-size: 12pt">providedIn: 'root'</font></p>
+<p><font size="3" style="font-size: 12pt">})</font></p>
+<p><font size="3" style="font-size: 12pt">export class AirportService
+extends Store&lt;Airport[]&gt;{</font></p>
+<p><font size="3" style="font-size: 12pt">constructor() { </font>
+</p>
+<p><font size="3" style="font-size: 12pt">super([{code: 'SMF', name:
+&quot;Sacramento International&quot;}]);</font></p>
+<p><font size="3" style="font-size: 12pt">}</font></p>
+<p><br/>
+<br/>
+
+</p>
+<p><font size="3" style="font-size: 12pt">addAirport(code: string,
+name: string) {</font></p>
+<p><font size="3" style="font-size: 12pt">const newState =
+[...this.getValue(), {code, name}];</font></p>
+<p><font size="3" style="font-size: 12pt">this.setState(newState);</font></p>
+<p><font size="3" style="font-size: 12pt">}</font></p>
+<p><font size="3" style="font-size: 12pt">}</font></p>
+<p style="margin-left: 1cm; margin-right: 1cm"><img src="State%20Management%20with%20Observable%20Store%20Services_html_f4c4c148a9844045.png" name="Image1" align="left" width="350" height="146" border="0"/>
+<br/>
+<br/>
+
+</p>
+<p style="margin-left: 1cm; margin-right: 1cm"><br/>
+<br/>
+
+</p>
+</body>
+</html>
