@@ -1,0 +1,211 @@
+https://www.angulartraining.com/daily-newsletter/
+https://angular-training.getlearnworlds.com/course/angular-signals
+
+https://www.angulartraining.com/daily-newsletter/page/5
+://blog.angulartraining.com/
+
+C:
+cd C:\angulartraining_alcfeoh-main
+
+
+
+Async pipe, Signals, and Change Detection
+October 31, 2023
+https://www.angulartraining.com/daily-newsletter/async-pipe-syntax-tricks/
+https://github.com/angular/angular/blob/16.2.11/packages/common/src/pipes/async_pipe.ts#L166-L174
+https://github.com/angular/angular/blob/16.2.11/packages/core/src/signals/src/graph.ts#L255
+
+
+
+https://blog.angulartraining.com/how-to-implement-custom-form-validators-with-angular-861651b0dc2c
+
+ng new angular-custom-validator-form
+
+ng new at-forkjoin
+
+
+
+https://blog.angulartraining.com/tutorial-how-to-create-your-own-angular-directive-3532d7f31fab
+ng new ngDirective
+
+cd ngDirective
+
+ng g d ccLogo
+
+
+https://www.angulartraining.com/daily-newsletter/page/4/
+Data Transfer Object (DTO)
+
+https://app.quicktype.io/
+json2ts.com
+a website where you can copy-paste any chunk of JSON syntax and get a fully-typed output of interfaces with inferred types and everything.
+Quicktype also supports languages other than TypeScript, so you could use that same tool to generate the server-side types for your data in Java
+
+
+
+
+The power of Angular selectors
+https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors
+@Directive({
+  selector: 'button,[isActive]'
+})
+
+@Directive({
+  selector: 'button,:not([disableIsActive]),[isActive]'
+})
+
+<button disableIsActive>
+	Submit
+</button>
+
+https://github.com/angular/angular/blob/15.1.4/packages/forms/src/directives/ng_form.ts
+@Directive({
+  selector: 'form:not([ngNoForm]):not([formGroup]),ng-form,[ngForm]',
+  
+  
+
+
+https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog#attributes
+
+ng new at-dialog
+
+
+https://blog.angulartraining.com/how-to-create-a-simple-modal-dialog-with-angular-277ea7f96da1
+
+
+
+https://www.angulartraining.com/daily-newsletter/page/3/
+
+https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#input_types
+
+ng new ng-custom-feedback
+
+ng new ng-custom-validation-function
+
+
+
+https://blog.angulartraining.com/how-to-write-async-form-validators-with-angular-df99d016066c
+IS THE S
+https://blog.angulartraining.com/how-to-implement-custom-form-validators-with-angular-861651b0dc2c
+
+ng new ng-async-validator
+
+
+
+https://blog.angulartraining.com/rxjs-subjects-a-tutorial-4dcce0e9637f
+Read the rest of this story with a free account
+Edge browser see it
+Subjects are observables and observers.
+Subjects are multicast
+
+Stock API:
+https://finnhub.io/docs/api
+
+
+
+https://www.angulartraining.com/daily-newsletter/page/2/
+
+https://www.angulartraining.com/daily-newsletter/category/rxjs/operators/
+
+https://www.angulartraining.com/daily-newsletter/how-to-learn-more-about-rxjs-operators/
+
+https://rxjs.dev/operator-decision-tree
+
+
+
+https://angular.io/guide/hierarchical-dependency-injection
+
+
+
+http://json2ts.com/
+
+
+
+https://www.typescriptlang.org/docs/handbook/module-resolution.html#path-mapping
+tsconfig.json
+
+
+
+
+https://blog.angulartraining.com/how-to-cache-the-result-of-an-http-request-with-angular-f9aebd33ab3
+shareReplay
+I do not recommend subscribing to observables in your component the way I did in this post. Instead, you should be using the async pipe, as explained here. The above code is for demo purposes only.
+
+
+
+https://www.angulartraining.com/daily-newsletter/
+use ngOnInit only when your initialization code needs a @Input value to be set
+
+
+
+15
+named router outlet
+
+ng new named-router-outlet
+
+cd named-router-outlet
+
+ng generate module app-routing --flat --module=app
+
+
+
+
+startWith
+
+https://blog.angulartraining.com/dynamic-filtering-with-rxjs-and-angular-forms-a-tutorial-6daa3c44076a
+
+
+
+
+
+RxJs skipWhile operator
+
+ng new skipWhile
+
+
+
+https://stackblitz.com/edit/angular-takeuntil-test-8tkcng?file=src%2Fapp%2Fapp.component.ts,src%2Fapp%2Fapp.component.html
+RxJs takeUntil and takeWhile operators
+April 21, 2023
+
+ng new takeuntil --defaults
+
+
+
+https://blog.angulartraining.com/how-to-automatically-unsubscribe-your-rxjs-observables-tutorial-2f98b0560298
+
+
+
+keyValue pipe
+April 24, 2023
+
+ng new at-keyvalue-pipe --minimal --defaults
+
+
+
+The pre HTML tag stands for “preformatted” content. 
+https://angular.io/api/common/JsonPipe
+
+
+
+Anti-pattern: Subscription within a subscription
+April 25, 2023
+
+ng new switchMap-solve-Subscription-within-a-subscription --minimal --defaults
+
+
+
+How to create your own two-way data binding with Angular?
+April 26, 2023
+https://blog.angulartraining.com/tutorial-create-your-own-two-way-data-binding-in-angular-46487650ea82
+A two-way data-binding is two one-way data-bindings
+https://stackblitz.com/edit/github-rsj8pz?file=projects%2Fdemos%2Fsrc%2Fapp%2Ftwo-way-data-binding-example%2Fmessage.component.ts,projects%2Fdemos%2Fsrc%2Fapp%2Ftwo-way-data-binding-example%2Ftwo-way-data-binding-example.component.ts
+15.2.2
+
+ng new two-way-data-binding --defaults
+
+
+
+RxJs TapObserver
+May 22, 2023
+ng new at-tap-observer --defaults

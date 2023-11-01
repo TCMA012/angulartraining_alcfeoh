@@ -1,0 +1,10 @@
+https://www.angulartraining.com/daily-newsletter/
+https://www.angulartraining.com/daily-newsletter/ngrxlet-a-better-version-of-the-async-pipe/
+https://blog.angulartraining.com/ngrxlet-a-better-version-of-the-async-pipe-37bfc5c7a5ec
+Using a loading template with ngrxLet
+June 6, 2023
+ngrxLet can be installed as a dependency using npm
+npm install @ngrx/component
+it’s important to note that it is not the entire ngrx state management library, just a tiny subset of it, so using that directive does not require using anything else from ngrx.
+
+ngrxLet 
