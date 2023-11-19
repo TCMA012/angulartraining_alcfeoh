@@ -1,0 +1,4 @@
+Alain Chautard
+https://github.com/alcfeoh
+https://github.com/alcfeoh/ng2-training
+v16+
