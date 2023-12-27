@@ -1,0 +1,14 @@
+angulartraining2023
+Most popular posts of 2023
+https://www.angulartraining.com/daily-newsletter/three-ways-to-update-angular-signals/
+https://www.angulartraining.com/daily-newsletter/using-a-loading-template-with-ngrxlet/
+https://www.angulartraining.com/daily-newsletter/skeleton-loaders-with-angular/
+https://www.angulartraining.com/daily-newsletter/rxjs-withlatestfrom-operator/
+https://stackblitz.com/edit/at-rxjs-demo4?file=src%2Fapp%2Fapp.component.ts
+
+https://blog.angulartraining.com/dynamic-filtering-with-rxjs-and-angular-forms-a-tutorial-6daa3c44076a
+https://stackblitz.com/edit/angular-filtering-rxjs
+
+https://www.angulartraining.com/daily-newsletter/category/rxjs/operators/
+https://www.angulartraining.com/daily-newsletter/hot-and-cold-rxjs-observables/
+https://www.youtube.com/watch?v=nQrMgNIvqxM
